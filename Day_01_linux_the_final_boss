@@ -1,0 +1,191 @@
+Questions: What does pwd tell you? Why is man useful?
+
+pwd shows your current location in the file system.
+man provides documentation and examples for commands.
+
+
+Run sudo yum update on Amazon Linux 2 and sudo apt update on Ubuntu.
+Question: What happens? Explain the difference in one sentence, referencing the package managers section above.
+
+sudo yum update succeeds on Amazon Linux, fails on Ubuntu.
+sudo apt update succeeds on Ubuntu, fails on Amazon Linux.
+Explanation: Different distributions use different package managers (yum/dnf for RHEL-based systems (like Amazon Linux, CentOS, Fedora, etc.), apt for Debian-based).
+
+When you run:
+
+sudo yum update
+
+
+It:
+
+Connects to your system’s configured YUM repositories.
+
+Checks for newer versions of all installed packages.
+
+Downloads and installs updates (security patches, bug fixes, etc.).
+
+Keeps your system secure and up to date.
+
+
+Command	Purpose
+sudo yum check-update	      Checks for available updates without installing them
+sudo yum update -y	        Automatically installs all updates without prompting
+sudo yum upgrade	          Similar to update, but can also remove obsolete packages
+
+
+sudo apt update
+
+sudo apt update	Refreshes package lists (metadata)
+sudo apt upgrade	Installs available package updates
+sudo apt full-upgrade	Performs a deeper upgrade (can remove old packages)
+sudo apt install <package>	Installs a specific package
+sudo apt remove <package>	Uninstalls a package
+
+
+Explain the difference between the Linux kernel and a Linux distribution in your own words.
+
+1. The Linux Kernel
+
+The kernel is the core part of the operating system.
+
+It’s responsible for managing:
+
+Hardware (CPU, memory, disks, network)
+
+Processes (running programs)
+
+System calls (communication between software and hardware)
+
+Think of it as the engine of a car — it makes everything run, but it’s not the whole car.
+
+Example:
+The Linux kernel handles things like:
+
+Allocating memory to programs
+
+Managing files on disk
+
+Handling device drivers
+
+Scheduling tasks for the CPU
+
+You can’t use the kernel alone easily — it doesn’t have user interfaces, tools, or applications.
+
+💻 2. A Linux Distribution (Distro)
+
+A Linux distribution is a complete operating system built around the Linux kernel.
+
+It adds all the things you need to actually use the system:
+
+Package manager (like apt, yum, or dnf)
+
+System utilities and libraries
+
+Desktop environment or command-line tools
+
+Preinstalled software (like browsers, editors, servers)
+
+So, a distribution = Linux kernel + software + configuration + package manager
+
+Examples:
+
+Ubuntu
+
+Fedora
+
+Debian
+
+Amazon Linux
+
+Arch Linux
+
+Each distribution uses the same Linux kernel base, but customizes it for different use cases and user experiences.
+
+⚙️ In short:
+Concept	Description	Analogy
+Linux Kernel	The core engine that interacts with hardware and manages resources	The engine of a car
+Linux Distribution	A complete operating system built around the kernel with user tools and apps	The whole car (engine + body + dashboard + controls)
+
+
+What is the role of the GNU Project in the Linux ecosystem?
+
+The GNU Project created the core utilities, libraries, and free software philosophy that make Linux systems functional and open.
+The Linux kernel filled in the missing piece — together they form the GNU/Linux operating system we use today.
+
+
+
+nano hello.sh
+
+#!/bin/bash
+echo "Hello, Linux World!"
+echo "My current directory is: $(pwd)"
+echo "My distribution is:"
+cat /etc/os-release | grep PRETTY_NAME
+
+What does each line do? 
+
+Line-by-line explanation
+1. #!/bin/bash
+
+This is called a shebang (or hashbang).
+
+It tells the system which interpreter to use to run the script.
+
+In this case: /bin/bash, meaning the script should be executed using the Bash shell.
+
+🧠 Essentially: “Run this script using Bash.”
+
+2. echo "Hello, Linux World!"
+
+The echo command prints text to the terminal.
+
+This line displays a friendly message:
+
+Hello, Linux World!
+
+3. echo "My current directory is: $(pwd)"
+
+pwd means Print Working Directory — it outputs your current directory path.
+
+The syntax $(pwd) runs the pwd command inside the echo statement and inserts its output.
+
+So this line prints something like:
+
+My current directory is: /home/ec2-user
+
+4. echo "My distribution is:"
+
+Simply prints the label text "My distribution is:".
+
+It’s just a heading for the next line, which shows which Linux distribution you’re running.
+
+5. cat /etc/os-release | grep PRETTY_NAME
+
+/etc/os-release is a system file that contains information about your Linux distribution, such as its name and version.
+
+cat displays the contents of that file.
+
+The | grep PRETTY_NAME part filters the output to show only the line that contains the PRETTY_NAME field.
+
+Example output:
+
+PRETTY_NAME="Amazon Linux 2"
+
+
+So this tells you the name of your Linux distribution.
+
+
+Task: Run uname -r to check the kernel version on either instance. Compare it to the latest stable version on kernel.org. Why might cloud providers like AWS use older kernels?
+Hint: Consider stability, compatibility with cloud tools, and enterprise support.
+
+[ec2-user@ip-172-31-29-16 ~]$ uname -r
+6.1.153-175.280.amzn2023.x86_64
+
+ubuntu@ip-172-31-28-147:~$ uname -r
+6.14.0-1011-aws
+
+Our instances’ kernel versions (6.1.153-… and 6.14.0-…) are behind or customized compared to the official latest stable (6.15.2 as of mid-2025) on kernel.org.
+
+That’s normal and expected for production cloud environments.
+
+The reason is largely about stability, compatibility, maintainability, and risk mitigation, not about being “lazy” or “behind.”
