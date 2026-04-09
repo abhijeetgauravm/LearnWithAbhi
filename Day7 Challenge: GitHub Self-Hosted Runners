@@ -1,0 +1,129 @@
+1. What is a GitHub runner?
+
+A GitHub runner is a machine (virtual or physical) that executes workflows defined in GitHub Actions.
+
+It runs jobs like:
+
+Building code
+
+Running tests
+
+Deploying applications
+
+Each job in a workflow is picked up and executed by a runner
+
+👉 Think of it as the execution engine behind your CI/CD pipeline.
+
+2. How do self-hosted runners differ from GitHub-hosted runners?
+
+Feature	                                 GitHub-hosted runners	                                Self-hosted runners
+
+Infrastructure	                           Managed by GitHub	                                     Managed by you
+Setup	                                        Ready-to-use	                                You must install & configure
+Scalability	                                   Auto-scaled	                                   Manual / custom scaling
+Cost	                                    Pay-per-use (free tier available)	                   Your infrastructure cost
+Customization	                                  Limited	                                  Full control (OS, tools, network)
+Security control	                           GitHub-managed	                                   Fully your responsibility
+
+👉 In short:
+
+GitHub-hosted = convenience
+
+Self-hosted = control + flexibility
+
+3. What security considerations should you take with self-hosted runners?
+
+When using self-hosted runners, you must secure them yourself:
+
+Access Control
+
+Restrict which repositories can use the runner
+Use least-privilege principles
+
+Secrets Management
+
+Avoid exposing secrets in logs
+Use encrypted secrets from GitHub
+
+Isolation
+
+Use separate runners for sensitive workloads
+Avoid sharing runners across untrusted repos
+
+Network Security
+
+Place runners behind firewalls/VPC
+Restrict outbound/inbound traffic
+
+Ephemeral Runners
+
+Prefer short-lived runners that reset after each job
+
+Patch & Updates
+
+Regularly update OS and dependencies
+
+👉 Biggest risk: untrusted code execution on your infrastructure
+
+4. How can you scale self-hosted runners?
+
+Scaling can be done in multiple ways:
+
+Horizontal Scaling
+
+Add more runner machines
+
+Auto-scaling with Cloud
+
+Use tools like:
+
+Kubernetes + autoscaling
+Cloud VMs (AWS EC2, Azure VM)
+
+Runner Orchestration
+
+Use solutions like:
+Actions Runner Controller (ARC) on Kubernetes
+
+Ephemeral Runners
+
+Spin up a new runner per job and destroy after completion
+
+👉 Best practice:
+Use containerized + auto-scaling runners for production workloads.
+
+5. Can a single self-hosted runner be used for multiple repositories? Why or why not?
+
+✅ Yes, it can — but with caution.
+
+Why it works:
+
+A self-hosted runner can be registered at:
+
+Repository level
+Organization level
+Enterprise level
+If registered at org/enterprise level → multiple repos can use it
+
+Why it can be risky:
+
+Security risks
+
+One repo’s workflow can affect another
+
+Resource contention
+
+Jobs may queue or slow down
+
+State leakage
+
+Files/artifacts may persist between jobs
+
+👉 Best Practice:
+
+Use separate or ephemeral runners for:
+
+Sensitive projects
+Public repositories
+
+Use shared runners only for trusted environments
